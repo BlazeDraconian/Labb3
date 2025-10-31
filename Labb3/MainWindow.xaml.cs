@@ -16,20 +16,13 @@ namespace Labb3
     
     public partial class MainWindow : Window
     {
-        private int count = 1;
+      
         public MainWindow()
         {
             InitializeComponent();
 
-            var pack = new QuestionPack("MyQuestionPack");
-            DataContext = new QuestionPackViewModel(pack);
+            DataContext =  new MainWindowViewModel();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            QuestionPackViewModel viewModel = (DataContext as QuestionPackViewModel);
-            viewModel.Name = "New name";
-            viewModel.Questions.Add(new Question($"Fråga {count++}", "2", "3", "1", "4"));
-        }
     }
 }

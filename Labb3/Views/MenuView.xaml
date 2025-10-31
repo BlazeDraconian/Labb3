@@ -6,7 +6,20 @@
              xmlns:local="clr-namespace:Labb3.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+    <Menu>
+
+        <MenuItem Header="_File">
+            <MenuItem Header="_New Question Pack"/>
+            <Separator/>
+            <MenuItem Header="E_xit"/>
+        </MenuItem>
+        <MenuItem Header="_Edit">
+            <MenuItem Header="Add Question" InputGestureText="Ctrl+A"/>
+            <Separator/>
+            <MenuItem Header="Remove Question" InputGestureText="Ctrl+R"/>
+            <Separator/>
+            <MenuItem Header="Edit Question" InputGestureText="Ctrl+E"/>
+        </MenuItem>
+
+    </Menu>
 </UserControl>
