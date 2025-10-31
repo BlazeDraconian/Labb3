@@ -17,12 +17,30 @@ namespace Labb3.ViewModels
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this._mainWindowViewModel = mainWindowViewModel;
-            SetPackNameCommand = new DelegateCommand(SetpackName);
+            SetPackNameCommand = new DelegateCommand(SetpackName, CanSetPackName);
+            DemoText = string.Empty;
+        }
+        private string _demoText;
+
+        public string DemoText
+        {
+            get { return _demoText; }
+            set { 
+                _demoText = value;
+                RaisePropertyChanged(); 
+                SetPackNameCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+
+        private bool CanSetPackName(object? arg)
+        {
+            return DemoText.Length > 0;
         }
 
         private void SetpackName(object? obj)
         {
-            ActivePack.Name = "New name";
+            ActivePack.Name = DemoText;
         }
     }
 }
