@@ -6,10 +6,56 @@
              xmlns:local="clr-namespace:Labb3.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             DataContext="{Binding ConfigurationViewModel}"
-             >
-    
-    <Grid>
+             Background="White"
+             DataContext="{Binding ConfigurationViewModel}">
+
+    <Grid Margin="10,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0">
+            <StackPanel>
+                
+                <TextBlock
+                    Text="{Binding ActivePack}"
+                    FontWeight="Bold"
+                    FontSize="12"
+                    Margin="0,30,0,0"/>
+                <ListBox 
+                    ItemsSource="{Binding ActivePack}" 
+                    SelectedItem="{Binding QuestionPack}" 
+                    Margin="5"
+                    ScrollViewer.VerticalScrollBarVisibility="Visible"
+                    Height="395"/>
+                
+
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Column="1">
+            <StackPanel>
+                <TextBlock Text="Question:" FontWeight="Bold" Margin="0,0,0,5"/>
+                <TextBox Text="{Binding Question.Query}" Height="100" />
+                
+                
+                <TextBlock Text="Correct Answer:" FontWeight="Bold" Margin="0,15,0,0"/>
+                <TextBox Text="{Binding Question.CorrectAnswer}" Margin="0,5,0,0"/>
+
+                <TextBlock Text="First Incorrect Answer:" FontWeight="Bold"/>
+                <TextBox Text="{Binding Question.IncorrectAnswer1}" Margin="0,5,0,0"/>
+
+                <TextBlock Text="Second Incorrect Answer:" FontWeight="Bold"/>
+                <TextBox Text="{Binding Question.IncorrectAnswer2}" Margin="0,5,0,0"/>
+
+                <TextBlock Text="Third Incorrect Answer:" FontWeight="Bold"/>
+                <TextBox Text="{Binding Question.IncorrectAnswer3}" Margin="0,5,0,0"/>
+
+            </StackPanel>  
             
+            
+        </Border>
     </Grid>
+
 </UserControl>

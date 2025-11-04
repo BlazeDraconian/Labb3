@@ -6,19 +6,63 @@
              xmlns:local="clr-namespace:Labb3.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" 
+             Background="White"
              DataContext="{Binding PlayerViewModel}"
 >
     <Grid>
-        <StackPanel>
+        <TextBlock Text="{Binding QuestionPack.TimeLimitInSeconds}"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   Margin="0,30,40,0"
+                   />
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Height="150"
+                    Width="500" Margin="0,38,0,0"      
+                    >
             <TextBox Text="{Binding DemoText, UpdateSourceTrigger = PropertyChanged}"/>
-
+            <!--
             <Button 
-            
             Content="{Binding ActivePack.Name}"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Command="{Binding SetPackNameCommand}"
-            />
+            />-->
+
+            <TextBlock Text="{Binding Question.Query}" FontSize="20"/>
+
         </StackPanel>
+        <Button x:Name="Answer1"
+            Content="{Binding Question.CorrectAnswer}"
+            Margin="110,265,400,125"
+            FontSize="12"
+            Background="LightGray"
+            Width="250"
+            Height="60"/>
+
+        <Button x:Name="Answer2"
+            Content="{Binding Question.IncorrectAnswer1}"
+            Margin="440,265,110,125"
+            FontSize="12"
+            Background="LightGray"
+            Width="250"
+            Height="60"/>
+
+        <Button x:Name="Answer3"
+            Content="{Binding Question.IncorrectAnswer2}"
+            Margin="130,361,420,30"
+            FontSize="12"
+            Background="LightGray"
+            Width="250"
+            Height="60"/>
+
+        <Button x:Name="Answer4"
+            Content="{Binding Question.IncorrectAnswer3}"
+            Margin="440,361,110,29"
+            FontSize="12"
+            Background="LightGray"
+            Width="250"
+        Height="60"/>
     </Grid>
 </UserControl>

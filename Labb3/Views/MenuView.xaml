@@ -10,15 +10,29 @@
 
         <MenuItem Header="_File">
             <MenuItem Header="_New Question Pack"/>
+            <MenuItem Header="Select Question Pack"/>
+            <MenuItem Header="Delete Question Pack"/>
+            <Separator/>
+            <MenuItem Header="Import Question Pack"/>
             <Separator/>
             <MenuItem Header="E_xit"/>
         </MenuItem>
+        
         <MenuItem Header="_Edit">
             <MenuItem Header="Add Question" InputGestureText="Ctrl+A"/>
             <Separator/>
             <MenuItem Header="Remove Question" InputGestureText="Ctrl+R"/>
             <Separator/>
             <MenuItem Header="Edit Question" InputGestureText="Ctrl+E"/>
+            <MenuItem Header="Set Pack name" Command="{Binding PlayerViewModel.SetPackNameCommand}"/>
+        </MenuItem>
+
+        <MenuItem Header="View">
+            <MenuItem Header="Play"/>
+            <MenuItem Header="Edit"/>
+            <Separator/>
+            <MenuItem Header="Fullscreen"/>
+
         </MenuItem>
 
     </Menu>
