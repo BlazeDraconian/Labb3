@@ -5,9 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Labb3"
         xmlns:views="clr-namespace:Labb3.Views"
+        xmlns:viewmodels="clr-namespace:Labb3.ViewModels"
         mc:Ignorable="d"
        d:Height="450" d:Width="800"
         Title="MainWindow" Height="450" Width="800" FontSize="24">
+    <Window.DataContext>
+        <viewmodels:MainWindowViewModel/>
+    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -16,7 +20,7 @@
 
 
         <views:MenuView Grid.Row="0"/>
-        <views:PlayerView Grid.Row="1"/>
-        <views:ConfigurationView Grid.Row="1"/>
+        <views:PlayerView Grid.Row="1"/> 
+        <views:ConfigurationView Grid.Row="1"/> 
     </Grid>
 </Window>

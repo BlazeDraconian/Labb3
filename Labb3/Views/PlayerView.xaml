@@ -10,7 +10,7 @@
              DataContext="{Binding PlayerViewModel}"
 >
     <Grid>
-        <TextBlock Text="{Binding QuestionPack.TimeLimitInSeconds}"
+        <TextBlock Text="{Binding ActivePack.TimeLimitInSeconds}"
                    FontWeight="Bold"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Top"
@@ -30,11 +30,11 @@
             Command="{Binding SetPackNameCommand}"
             />-->
 
-            <TextBlock Text="{Binding Question.Query}" FontSize="20"/>
+            <TextBlock Text="{Binding ActivePack.SelectedQuestion.Query}" FontSize="20"/>
 
         </StackPanel>
         <Button x:Name="Answer1"
-            Content="{Binding Question.CorrectAnswer}"
+            Content="{Binding ActivePack.SelectedQuestion.CorrectAnswer}"
             Margin="110,265,400,125"
             FontSize="12"
             Background="LightGray"
@@ -42,7 +42,7 @@
             Height="60"/>
 
         <Button x:Name="Answer2"
-            Content="{Binding Question.IncorrectAnswer1}"
+            Content="{Binding ActivePack.SelectedQuestion.IncorrectAnswer1}"
             Margin="440,265,110,125"
             FontSize="12"
             Background="LightGray"
@@ -50,7 +50,7 @@
             Height="60"/>
 
         <Button x:Name="Answer3"
-            Content="{Binding Question.IncorrectAnswer2}"
+            Content="{Binding ActivePack.SelectedQuestion.IncorrectAnswer2}"
             Margin="130,361,420,30"
             FontSize="12"
             Background="LightGray"
@@ -58,7 +58,7 @@
             Height="60"/>
 
         <Button x:Name="Answer4"
-            Content="{Binding Question.IncorrectAnswer3}"
+            Content="{Binding ActivePack.SelectedQuestion.IncorrectAnswer3}"
             Margin="440,361,110,29"
             FontSize="12"
             Background="LightGray"

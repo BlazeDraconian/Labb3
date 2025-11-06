@@ -10,6 +10,7 @@ namespace Labb3.ViewModels
 {
     class MainWindowViewModel: ViewModelBase
     {
+		public ViewModelBase Model { get; set; }
         public ObservableCollection<QuestionPackViewModel> Packs { get; } = new();
 
 		private QuestionPackViewModel _activePack;
@@ -30,8 +31,7 @@ namespace Labb3.ViewModels
 		{
 			PlayerViewModel = new PlayerViewModel(this);
 			ConfigurationViewModel = new ConfigurationViewModel(this);
-
-			new PlayerViewModel(this);
+            new PlayerViewModel(this);
             var pack = new QuestionPack("MyQuestionPack");
             ActivePack = new QuestionPackViewModel(pack);
             ActivePack.Questions.Add(new Question($"Vad heter Sveriges huvudstad?", "Stockholm", "Göteborg", " Malmö", "Helsingborg"));

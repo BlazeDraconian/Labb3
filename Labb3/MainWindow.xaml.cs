@@ -21,7 +21,7 @@ namespace Labb3
         {
             InitializeComponent();
 
-            DataContext =  new MainWindowViewModel();
+            //DataContext =  new MainWindowViewModel();
         }
 
     }
