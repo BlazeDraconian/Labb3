@@ -10,6 +10,19 @@ namespace Labb3.ViewModels
 {
     class MainWindowViewModel: ViewModelBase
     {
+		private QuestionPackViewModel _selectedPack;
+
+		public QuestionPackViewModel SelectedPack
+		{
+			get => _selectedPack;
+			set
+			{
+				_selectedPack = value;
+				RaisePropertyChanged();
+			}
+
+		}
+
 		public ViewModelBase Model { get; set; }
         public ObservableCollection<QuestionPackViewModel> Packs { get; } = new();
 
@@ -24,6 +37,7 @@ namespace Labb3.ViewModels
 				PlayerViewModel.RaisePropertyChanged(nameof(PlayerViewModel.ActivePack));
 				}
 		}
+
         public PlayerViewModel? PlayerViewModel { get; set; }
 		public ConfigurationViewModel ConfigurationViewModel { get;}
 

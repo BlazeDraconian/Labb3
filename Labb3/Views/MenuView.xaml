@@ -9,30 +9,31 @@
     <Menu>
 
         <MenuItem Header="_File">
-            <MenuItem Header="_New Question Pack" InputGestureText="Ctrl+N" Command="{Binding PlayerViewModel.NewQuestionPack }" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf044;" Click=""/>
-            <MenuItem Header="Select Question Pack" InputGestureText="Ctrl+S" Command="{Binding PlayerViewModel.SelectQuestionPack}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf07c;" Click=""/>
-            <MenuItem Header="Delete Question Pack" InputGestureText="Delete" Command="{Binding PlayerViewModel.DeleteQuestionPack}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf1f8;" Click=""/> 
+            <MenuItem Header="_New Question Pack" InputGestureText="Ctrl+N" Command="{Binding PlayerViewModel.NewQuestionPack }" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf044;"/>
+            <MenuItem Header="Select Question Pack" InputGestureText="Ctrl+S" Command="{Binding PlayerViewModel.SelectQuestionPack}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf07c;"/>
+            <MenuItem Header="Delete Question Pack" InputGestureText="Delete" Command="{Binding PlayerViewModel.DeleteQuestionPack}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf1f8;"/> 
             <Separator/>
-            <MenuItem Header="Import Question Pack" InputGestureText="Ctrl+I" Command="{Binding PlayerViewModel.ImportQuestionPack}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf019;" Click=""/>
+            <MenuItem Header="Import Question Pack" InputGestureText="Ctrl+I" Command="{Binding PlayerViewModel.ImportQuestionPack}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf019;" />
             <Separator/>
-            <MenuItem Header="E_xit" InputGestureText="Esc" Command="{Binding ExitCommand}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf52b;" Click=""/>
+            <MenuItem Header="E_xit" InputGestureText="Esc" Command="{Binding ExitCommand}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf52b;"/>
         </MenuItem>
         
         <MenuItem Header="_Edit">
-            <MenuItem Header="Add Question" InputGestureText="Insert"  Command="{Binding PlayerViewModel.AddQuestion}"  FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#x2b;" Click=""/>
+            <MenuItem Header="Add Question" InputGestureText="Insert"  Command="{Binding PlayerViewModel.AddQuestion}"  FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#x2b;"/>
             <Separator/>
-            <MenuItem Header="Remove Question" InputGestureText="Ctrl+R" Command="{Binding PlayerViewModel.RemoveQuestion}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf068;" Click=""/>
+            <MenuItem Header="Remove Question" InputGestureText="Ctrl+R" Command="{Binding PlayerViewModel.RemoveQuestion}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf068;" />
             <Separator/>
-            <MenuItem Header="Edit Question" InputGestureText="Ctrl+E" Command ="{Binding PlayerViewModel.EditQuestion}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf304;" Click=""/>
-            <MenuItem Header="Set Pack name" Command="{Binding PlayerViewModel.SetPackNameCommand}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf573;" Click=""/>
+            <MenuItem Header="Edit Question" InputGestureText="Ctrl+E" Command ="{Binding PlayerViewModel.EditQuestion}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf304;"/>
+
+            <MenuItem Header="Pack Options" InputGestureText="Ctrl+Shift" Command="{Binding PlayerViewModel.PackOptions}" FontFamily="./#fontawesome-free-7.1.0-desktop"/> 
         </MenuItem>
 
         <MenuItem Header="View">
-            <MenuItem Header="Play" InputGestureText="P" Command="{Binding PlayerViewModel.PlayCommand}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf04b;" Click=""/>
+            <MenuItem Header="Play" InputGestureText="P" Command="{Binding PlayerViewModel.PlayCommand}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf04b;"/>
 
             <!--MenuItem Header="Edit" InputGestureText="E" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf013;"/> -->
             <Separator/>
-            <MenuItem Header="Fullscreen" InputGestureText="F11" Command="{Binding PlayerViewModel.FullScreen }" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf065;" Click=""/>
+            <MenuItem Header="Fullscreen" InputGestureText="F11" Command="{Binding PlayerViewModel.FullScreen }" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf065;"/>
 
         </MenuItem>
 

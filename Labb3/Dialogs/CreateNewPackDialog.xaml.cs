@@ -1,5 +1,10 @@
-﻿using System;
+﻿using Labb3.Command;
+using Labb3.Models;
+using Labb3.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,14 +19,39 @@ using System.Windows.Shapes;
 
 namespace Labb3.Dialogs
 {
-    /// <summary>
-    /// Interaction logic for CreateNewPackDialog.xaml
-    /// </summary>
     public partial class CreateNewPackDialog : Window
     {
+        public CreateNewPackDialogViewModel ViewModel { get; }
+
         public CreateNewPackDialog()
         {
             InitializeComponent();
+            ViewModel = new CreateNewPackDialogViewModel();
+            DataContext = ViewModel;
+            ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+        }
+
+        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ViewModel.DialogResult))
+            {
+                if (ViewModel.DialogResult.HasValue)
+                {
+
+                    this.DialogResult = ViewModel.DialogResult;
+
+                }
+            }
+
+
+        }
+
+        public CreateNewPackDialog(QuestionPackViewModel existingPack) : this()
+        {
+            ViewModel = new CreateNewPackDialogViewModel(existingPack);
+            DataContext = ViewModel;
         }
     }
+
+
 }

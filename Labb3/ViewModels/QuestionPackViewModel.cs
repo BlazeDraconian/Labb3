@@ -8,8 +8,8 @@ using System.Runtime.CompilerServices;
 namespace Labb3.ViewModels
 {
 
-    internal class QuestionPackViewModel : ViewModelBase
-    {
+        public class QuestionPackViewModel : ViewModelBase
+        {
         private readonly QuestionPack _model;
         public QuestionPackViewModel(QuestionPack model)
         {
@@ -57,6 +57,29 @@ namespace Labb3.ViewModels
             set
             {
                 _model.TimeLimitInSeconds = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private Question? _selectedQuestion;
+
+        public Question? SelectedQuestion
+        {
+            get => _selectedQuestion;
+            set
+            {
+                _selectedQuestion = value;
+                RaisePropertyChanged();
+            }
+
+        }
+
+        public Difficulty Difficulty
+        {
+            get =>_model.Difficulty;
+            set
+            {
+                _model.Difficulty = value;
                 RaisePropertyChanged();
             }
         }

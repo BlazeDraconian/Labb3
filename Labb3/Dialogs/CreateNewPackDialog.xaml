@@ -3,10 +3,41 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Labb3.Dialogs"
+        xmlns:local="clr-namespace:Labb3.Dialogs" xmlns:viewmodels="clr-namespace:Labb3.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:CreateNewPackDialogViewModel}"
         mc:Ignorable="d"
-        Title="CreateNewPackDialog" Height="450" Width="800">
-    <Grid>
+        DataContext="CreateNewPackDialogViewModel.cs"
+        Title="New Question Pack" Height="300" Width="300">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Pack Name:" FontWeight="Bold" />
+        <TextBox  Grid.Row="1" Text="{Binding QuestionPack.Name}"/>
+
+        <TextBlock Grid.Row="2" Margin="0, 20, 0, 0"  Text="Difficulty:" FontWeight="Bold"/>
+        <ComboBox Grid.Row="3" ItemsSource="{Binding Difficulties}" SelectedItem="{Binding Difficulty}"/>
+
+        <TextBlock Grid.Row="4" Margin="0, 20, 0, 0" Text="Time Limit:" FontWeight="Bold"/>
+        <TextBlock Grid.Row="4" Text=" seconds" Margin="5,11,0,0" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
         
+        <StackPanel Grid.Row="5" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,10,0,0">
+            <Slider Width="200" Minimum="5" Maximum="60" TickFrequency="5" IsSnapToTickEnabled="True" Value="{Binding TimeLimitInSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Margin="10,0,0,0" VerticalAlignment="Center"  Text="{Binding TimeLimitInSeconds}"/>
+            
+        </StackPanel>
+
+
+        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,65,0,0">
+            <Button Content="Cancel" Width="70" Margin="0,0,10,0" Command="{Binding CancelCommand}"/>
+            <Button Content="Create" Width="70" Command="{Binding CreateCommand}"/>
+        </StackPanel>
     </Grid>
 </Window>

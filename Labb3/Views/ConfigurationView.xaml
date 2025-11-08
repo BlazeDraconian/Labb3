@@ -27,8 +27,8 @@
                     Margin="0,30,0,0"/>
                 <ListBox 
                     DataContext="{Binding MainWindowViewModels}"
-                    ItemsSource="{Binding ActivePack}" 
-                    SelectedItem="{Binding QuestionPack}" 
+                    ItemsSource="{Binding Packs}" 
+                    SelectedItem="{Binding SelectedPack}" 
                     Margin="5"
                     ScrollViewer.VerticalScrollBarVisibility="Visible"
                     Height="395"/>
@@ -44,16 +44,16 @@
 
 
                 <TextBlock Text="Correct Answer:" FontWeight="Bold" Margin="0,15,0,0"/>
-                <TextBox Text="{Binding ActivePack.CorrectAnswer}" Margin="0,5,0,0"/>
+                <TextBox Text="{Binding ActivePack.SelectedQuestion.CorrectAnswer}" Margin="0,5,0,0"/>
 
                 <TextBlock Text="First Incorrect Answer:" FontWeight="Bold"/>
-                <TextBox Text="{Binding ActivePack.IncorrectAnswer1}" Margin="0,5,0,0"/>
+                <TextBox Text="{Binding ActivePack.SelectedQuestion.IncorrectAnswer1}" Margin="0,5,0,0"/>
 
                 <TextBlock Text="Second Incorrect Answer:" FontWeight="Bold"/>
-                <TextBox Text="{Binding ActivePack.IncorrectAnswer2}" Margin="0,5,0,0"/>
+                <TextBox Text="{Binding ActivePack.SelectedQuestion.IncorrectAnswer2}" Margin="0,5,0,0"/>
 
                 <TextBlock Text="Third Incorrect Answer:" FontWeight="Bold"/>
-                <TextBox Text="{Binding ActivePack. SelectedQuestion.IncorrectAnswer3}" Margin="0,5,0,0"/>
+                <TextBox Text="{Binding ActivePack.SelectedQuestion.IncorrectAnswer3}" Margin="0,5,0,0"/>
 
             </StackPanel>
 
