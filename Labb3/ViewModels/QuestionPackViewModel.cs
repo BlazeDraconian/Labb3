@@ -56,8 +56,12 @@ namespace Labb3.ViewModels
             get => _model.TimeLimitInSeconds;
             set
             {
-                _model.TimeLimitInSeconds = value;
-                RaisePropertyChanged();
+                if (_model.TimeLimitInSeconds != value)
+                {
+                    _model.TimeLimitInSeconds = value;
+                    RaisePropertyChanged();
+                }
+               
             }
         }
 

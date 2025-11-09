@@ -3,11 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Labb3.Views"
+             xmlns:local="clr-namespace:Labb3.Views" xmlns:viewmodels="clr-namespace:Labb3.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:PlayerViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" 
              Background="White"
-             DataContext="{Binding PlayerViewModel}"
+
 >
     <Grid>
         <TextBlock Text="{Binding ActivePack.TimeLimitInSeconds}"
@@ -22,13 +23,7 @@
                     Width="500" Margin="0,38,0,0"      
                     >
             <TextBox Text="{Binding DemoText, UpdateSourceTrigger = PropertyChanged}"/>
-            <!--
-            <Button 
-            Content="{Binding ActivePack.Name}"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Command="{Binding SetPackNameCommand}"
-            />-->
+           
 
             <TextBlock Text="{Binding ActivePack.SelectedQuestion.Query}" FontSize="20"/>
 

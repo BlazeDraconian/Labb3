@@ -71,8 +71,8 @@ namespace Labb3.ViewModels
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
-            ActivePack.TimeLimitInSeconds -= 1;
-            if (ActivePack.TimeLimitInSeconds <= 1)
+            ActivePack.TimeLimitInSeconds= ActivePack.TimeLimitInSeconds -= 1;
+            if (ActivePack.TimeLimitInSeconds < 0)
             {
                 _timer.Stop();
             }

@@ -29,7 +29,7 @@
         </MenuItem>
 
         <MenuItem Header="View">
-            <MenuItem Header="Play" InputGestureText="P" Command="{Binding PlayerViewModel.PlayCommand}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf04b;"/>
+            <MenuItem Header="Play" InputGestureText="P" Command="{Binding DataContext.PlayCommand, RelativeSource= {RelativeSource AncestorType=Window}}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf04b;"/>
 
             <!--MenuItem Header="Edit" InputGestureText="E" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf013;"/> -->
             <Separator/>
