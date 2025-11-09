@@ -39,6 +39,7 @@ namespace Labb3.Dialogs
                 {
 
                     this.DialogResult = ViewModel.DialogResult;
+                    this.Close();
 
                 }
             }

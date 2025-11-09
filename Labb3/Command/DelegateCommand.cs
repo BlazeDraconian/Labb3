@@ -6,6 +6,7 @@ namespace Labb3.Command
     {
         private readonly Action<object?> execute;
         private readonly Func<object?, bool>? canExecute;
+        
 
         public event EventHandler? CanExecuteChanged;
 
@@ -16,6 +17,8 @@ namespace Labb3.Command
             this.execute = execute;
             this.canExecute = canExecute;
         }
+
+       
 
         public bool CanExecute(object? parameter) => canExecute is null ? true : canExecute(parameter);
 

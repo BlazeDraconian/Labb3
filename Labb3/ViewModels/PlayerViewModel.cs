@@ -16,7 +16,9 @@ namespace Labb3.ViewModels
     class PlayerViewModel : ViewModelBase
     {
         private readonly MainWindowViewModel? _mainWindowViewModel;
-
+       
+        public DelegateCommand RandomiseActiveQuestionAnswers {  get;}
+        public DelegateCommand RandomiseActivePack {  get;}
         public DelegateCommand SetPackNameCommand { get; }
         public DelegateCommand NewQuestionPack { get; }
         public DelegateCommand PlayCommand { get; }
@@ -55,6 +57,8 @@ namespace Labb3.ViewModels
             RemoveQuestion = new DelegateCommand(removeQuestion);
             EditQuestion = new DelegateCommand(editQuestion);
             FullScreen = new DelegateCommand(fullScreen);
+            //RandomiseActivePack = new DelegateCommand(randomiseActivePack);
+            //RandomiseActiveQuestionAnswers = new DelegateCommand(randomiseActiveQuestionAnswers);
 
 
             DemoText = string.Empty;
@@ -75,6 +79,7 @@ namespace Labb3.ViewModels
         }
 
         private string _demoText;
+       
 
         public string DemoText
         {
@@ -86,16 +91,22 @@ namespace Labb3.ViewModels
             }
         }
 
+        public Random RandomQuestions { get; private set; }
+
         public void newQuestionPack(object? obj)
         {
             var dialog = new CreateNewPackDialog();
-            var result = dialog.ShowDialog();
+            bool? result = dialog.ShowDialog();
 
             if (result == true)
             {
                 var vm = dialog.ViewModel;
 
-                var newPack = new QuestionPack(vm.PackName, vm.Difficulty, vm.TimeLimitInSeconds);
+                var newPack = new QuestionPack(vm.PackName)
+                {
+                    Difficulty= vm.Difficulty,
+                    TimeLimitInSeconds= vm.TimeLimitInSeconds,
+                };
                 var newPackVM = new QuestionPackViewModel(newPack);
 
                 _mainWindowViewModel.Packs.Add(newPackVM);
@@ -108,6 +119,13 @@ namespace Labb3.ViewModels
         {
             var dialog = new CreateNewPackDialog(_mainWindowViewModel.ActivePack);
             dialog.ShowDialog();
+
+            if (dialog.ViewModel.DialogResult != true)
+                return;
+
+            _mainWindowViewModel.ActivePack.RaisePropertyChanged(nameof(_mainWindowViewModel.ActivePack.Name));
+            _mainWindowViewModel.ActivePack.RaisePropertyChanged(nameof(_mainWindowViewModel.ActivePack.Difficulty));
+            _mainWindowViewModel.ActivePack.RaisePropertyChanged(nameof(_mainWindowViewModel.ActivePack.TimeLimitInSeconds));
         }
 
         public void selectQuestionPack(object? obj)
@@ -193,5 +211,44 @@ namespace Labb3.ViewModels
         {
             ActivePack.Name = DemoText;
         }
+        
+
+        //public void randomiseActivePack()
+        //{
+        //    RandomQuestions = ActivePack?.Questions.ToList() ?? new List<Question>();
+        //    RandomQuestions = RandomQuestions.OrderBy(q => random.Next()).ToList();
+
+        //    if (RandomQuestions.Count > 0)
+        //    {
+        //        CurrentQuestionIndex = 0;
+        //        RaisePropertyChanged(nameof(SelectedQuestion));
+        //        RandomiseActiveQuestionAnswers(CurrentQuestionIndex);
+        //    }
+
+        //    if (ActivePack != null)
+        //    {
+        //        TimeLimitInSeconds = ActivePack.TimeLimitInSeconds;
+        //        _timer.Start();
+        //    }
+        //}
+        //public void randomiseActiveQuestionAnswers(int questionIndex)
+        //{
+        //    if (RandomQuestions == null || RandomQuestions.Count == 0) return;
+        //    var currentQuestion = RandomQuestions[questionIndex];
+
+        //    var allAnswers = new List<AnswerViewModel>
+        //    {
+        //        new AnswerViewModel(currentQuestion.CorrectAnswer),
+        //        new AnswerViewModel(currentQuestion.IncorrectAnswers[0]),
+        //        new AnswerViewModel(currentQuestion.IncorrectAnswers[1]),
+        //        new AnswerViewModel(currentQuestion.IncorrectAnswers[2])
+        //    };
+        //    AnswerViewModels.Clear();
+        //    foreach (var ans in allAnswers.OrderBy(a => random.Next()))
+        //    {
+        //        AnswerViewModels.Add(ans);
+        //    }
+        //}
+        
     }
 }

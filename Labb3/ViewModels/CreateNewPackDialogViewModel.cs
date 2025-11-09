@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Labb3.ViewModels
@@ -60,14 +61,14 @@ namespace Labb3.ViewModels
 
             private void Create(object? obj)
             {
-            DialogResult = true;
-            
+                DialogResult = true;
+                
             }
 
             private void Cancel(object? obj)
             {
-            DialogResult = false;
-            
+                DialogResult = false;
+               
             }
 
         public CreateNewPackDialogViewModel(QuestionPackViewModel existingPack)
@@ -84,12 +85,13 @@ namespace Labb3.ViewModels
                 existingPack.TimeLimitInSeconds = TimeLimitInSeconds;
 
                 DialogResult = true;
+                RaisePropertyChanged(nameof(DialogResult));
             });
 
             CancelCommand = new DelegateCommand((_) =>
             {
                 DialogResult = false;
-                
+                RaisePropertyChanged(nameof(DialogResult));
             });
         }
     }
