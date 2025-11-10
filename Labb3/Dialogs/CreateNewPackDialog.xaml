@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Labb3.Dialogs" xmlns:viewmodels="clr-namespace:Labb3.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:CreateNewPackDialogViewModel}"
         mc:Ignorable="d"
-        DataContext="CreateNewPackDialogViewModel.cs"
         Title="New Question Pack" Height="300" Width="300">
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -20,17 +19,17 @@
         </Grid.RowDefinitions>
 
         <TextBlock Text="Pack Name:" FontWeight="Bold" />
-        <TextBox  Grid.Row="1" Text="{Binding QuestionPack.Name}"/>
+        <TextBox  Grid.Row="1" Text="{Binding NewPack.Name}"/>
 
         <TextBlock Grid.Row="2" Margin="0, 20, 0, 0"  Text="Difficulty:" FontWeight="Bold"/>
-        <ComboBox Grid.Row="3" ItemsSource="{Binding Difficulties}" SelectedItem="{Binding Difficulty}"/>
+        <ComboBox Grid.Row="3" ItemsSource="{Binding NewPack}" SelectedItem="{Binding NewPack.Difficulty}"/>
 
         <TextBlock Grid.Row="4" Margin="0, 20, 0, 0" Text="Time Limit:" FontWeight="Bold"/>
         <TextBlock Grid.Row="4" Text=" seconds" Margin="5,11,0,0" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
         
         <StackPanel Grid.Row="5" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,10,0,0">
-            <Slider Width="200" Minimum="5" Maximum="60" TickFrequency="5" IsSnapToTickEnabled="True" Value="{Binding TimeLimitInSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBlock Margin="10,0,0,0" VerticalAlignment="Center"  Text="{Binding TimeLimitInSeconds}"/>
+            <Slider Width="200" Minimum="5" Maximum="60" TickFrequency="5" IsSnapToTickEnabled="True" Value="{Binding NewPack.TimeLimitInSeconds, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Margin="10,0,0,0" VerticalAlignment="Center"  Text="{Binding NewPack.TimeLimitInSeconds}"/>
             
         </StackPanel>
 

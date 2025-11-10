@@ -30,6 +30,11 @@ namespace Labb3.Dialogs
             DataContext = ViewModel;
             ViewModel.PropertyChanged += ViewModel_PropertyChanged;
         }
+        public CreateNewPackDialog(QuestionPackViewModel existingPack) : this()
+        {
+            ViewModel = new CreateNewPackDialogViewModel(existingPack);
+            DataContext = ViewModel;
+        }
 
         private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
@@ -47,11 +52,6 @@ namespace Labb3.Dialogs
 
         }
 
-        public CreateNewPackDialog(QuestionPackViewModel existingPack) : this()
-        {
-            ViewModel = new CreateNewPackDialogViewModel(existingPack);
-            DataContext = ViewModel;
-        }
     }
 
 

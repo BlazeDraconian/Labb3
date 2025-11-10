@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Labb3.Views"
+             xmlns:local="clr-namespace:Labb3.Views" xmlns:viewmodels="clr-namespace:Labb3.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ConfigurationViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              Background="White">
@@ -44,27 +44,27 @@
         </Border>
 
         <Border Grid.Column="1">
-            <StackPanel DataContext="{Binding Question}">
+            <StackPanel>
                 <TextBlock Text="Question:" FontWeight="Bold" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding ActivePack.SelectedQuestion.QuestionText, UpdateSourceTrigger=PropertyChanged}" Height="100" />
+                <TextBox Text="{Binding ActivePack.SelectedQuestion.Query, UpdateSourceTrigger=PropertyChanged}" Height="100" />
 
 
                 <TextBlock Text="Correct Answer:" FontWeight="Bold" Margin="0,15,0,0"/>
                 <TextBox Text="{Binding ActivePack.SelectedQuestion.CorrectAnswer, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,0"/>
 
                 <TextBlock Text="First Incorrect Answer:" FontWeight="Bold"/>
-                <TextBox Text="{Binding ActivePack.SelectedQuestion.IncorrectAnswer1, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,0"/>
+                <TextBox Text="{Binding ActivePack.SelectedQuestion.IncorrectAnswers[0], UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,0"/>
 
                 <TextBlock Text="Second Incorrect Answer:" FontWeight="Bold"/>
-                <TextBox Text="{Binding ActivePack.SelectedQuestion.IncorrectAnswer2, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,0"/>
+                <TextBox Text="{Binding ActivePack.SelectedQuestion.IncorrectAnswers[1], UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,0"/>
 
                 <TextBlock Text="Third Incorrect Answer:" FontWeight="Bold"/>
-                <TextBox Text="{Binding ActivePack.SelectedQuestion.IncorrectAnswer3, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,0"/>
+                <TextBox Text="{Binding ActivePack.SelectedQuestion.IncorrectAnswers[2], UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,0"/>
 
             </StackPanel>
-
-
+            
         </Border>
+
     </Grid>
 
 </UserControl>

@@ -71,6 +71,11 @@ namespace Labb3.ViewModels
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
+            if (ActivePack == null)
+            {
+                _timer.Stop();
+                return;
+            }
             ActivePack.TimeLimitInSeconds= ActivePack.TimeLimitInSeconds -= 1;
             if (ActivePack.TimeLimitInSeconds < 0)
             {
@@ -102,10 +107,10 @@ namespace Labb3.ViewModels
             {
                 var vm = dialog.ViewModel;
 
-                var newPack = new QuestionPack(vm.PackName)
+                var newPack = new QuestionPack(vm.NewPack.Name)
                 {
-                    Difficulty= vm.Difficulty,
-                    TimeLimitInSeconds= vm.TimeLimitInSeconds,
+                    Difficulty= vm.NewPack.Difficulty,
+                    TimeLimitInSeconds= vm.NewPack.TimeLimitInSeconds,
                 };
                 var newPackVM = new QuestionPackViewModel(newPack);
 
@@ -142,7 +147,15 @@ namespace Labb3.ViewModels
 
             _mainWindowViewModel.Packs.Remove(_mainWindowViewModel.ActivePack);
 
-            _mainWindowViewModel.ActivePack = _mainWindowViewModel.Packs.First();
+            if (_mainWindowViewModel.Packs.Any())
+            {
+                _mainWindowViewModel.ActivePack = _mainWindowViewModel.Packs.First();
+            }
+            else
+            {
+                _mainWindowViewModel.ActivePack = null;
+                _mainWindowViewModel.Model = _mainWindowViewModel.ConfigurationViewModel;
+            }
         }
 
         public void importQuestionPack(object? obj)
@@ -167,7 +180,10 @@ namespace Labb3.ViewModels
 
         public void removeQuestion(object? obj)
         {
-            if (ActivePack.SelectedQuestion != null)
+            if (ActivePack == null || ActivePack == null)
+                return; 
+
+            else if (ActivePack.SelectedQuestion != null)
             {
                 ActivePack.Questions.Remove(ActivePack.SelectedQuestion);
             }
