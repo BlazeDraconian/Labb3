@@ -10,7 +10,8 @@
 
         <MenuItem Header="_File">
             <MenuItem Header="_New Question Pack" InputGestureText="Ctrl+N" Command="{Binding PlayerViewModel.NewQuestionPack }" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf044;"/>
-            <MenuItem Header="Select Question Pack" InputGestureText="Ctrl+S" Command="{Binding PlayerViewModel.SelectQuestionPack}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf07c;"/>
+            <MenuItem Header="Select Question Pack"  InputGestureText="Ctrl+S" Command="{Binding PlayerViewModel.SelectQuestionPack}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf07c;"/>
+
             <MenuItem Header="Delete Question Pack" InputGestureText="Delete" Command="{Binding PlayerViewModel.DeleteQuestionPack}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf1f8;"/> 
             <Separator/>
             <MenuItem Header="Import Question Pack" InputGestureText="Ctrl+I" Command="{Binding PlayerViewModel.ImportQuestionPack}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf019;" />

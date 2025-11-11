@@ -56,7 +56,9 @@ namespace Labb3.ViewModels
 
         public DelegateCommand PlayCommand { get; }
 
-         
+       
+
+
 
         public MainWindowViewModel()
 		{
@@ -68,7 +70,9 @@ namespace Labb3.ViewModels
 			ActivePack.Questions.Add(new Question($"Vad heter Sveriges huvudstad?", "Stockholm", "Göteborg", " Malmö", "Helsingborg"));
             Model = ConfigurationViewModel;
             PlayCommand = new DelegateCommand(PlayGame);
+           
         }
+
 
         private void PlayGame(object? obj)
         {

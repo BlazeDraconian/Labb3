@@ -16,9 +16,9 @@ namespace Labb3.ViewModels
     class PlayerViewModel : ViewModelBase
     {
         private readonly MainWindowViewModel? _mainWindowViewModel;
-       
-        public DelegateCommand RandomiseActiveQuestionAnswers {  get;}
-        public DelegateCommand RandomiseActivePack {  get;}
+
+        public DelegateCommand RandomiseActiveQuestionAnswers { get; }
+        public DelegateCommand RandomiseActivePack { get; }
         public DelegateCommand SetPackNameCommand { get; }
         public DelegateCommand NewQuestionPack { get; }
         public DelegateCommand PlayCommand { get; }
@@ -39,6 +39,22 @@ namespace Labb3.ViewModels
 
         public DelegateCommand FullScreen { get; }
 
+        public DelegateCommand AnswerCommand { get; }
+
+        private List<(string Text, bool IsCorrect)> _shuffledAnswers;
+
+        public string ButtonColor1 { get; set; } = "LightGray";
+        public string ButtonColor2 { get; set; } = "LightGray";
+        public string ButtonColor3 { get; set; } = "LightGray";
+        public string ButtonColor4 { get; set; } = "LightGray";
+
+        public string Answer1 { get; set; }
+        public string Answer2 { get; set; }
+        public string Answer3 { get; set; }
+        public string Answer4 { get; set; }
+
+
+
         public QuestionPackViewModel ActivePack { get => _mainWindowViewModel.ActivePack; }
 
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel)
@@ -57,6 +73,7 @@ namespace Labb3.ViewModels
             RemoveQuestion = new DelegateCommand(removeQuestion);
             EditQuestion = new DelegateCommand(editQuestion);
             FullScreen = new DelegateCommand(fullScreen);
+            AnswerCommand = new DelegateCommand(CheckAnswer);
             //RandomiseActivePack = new DelegateCommand(randomiseActivePack);
             //RandomiseActiveQuestionAnswers = new DelegateCommand(randomiseActiveQuestionAnswers);
 
@@ -64,8 +81,8 @@ namespace Labb3.ViewModels
             DemoText = string.Empty;
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
-            _timer.Tick += Timer_Tick; 
-            _timer.Start();    
+            _timer.Tick += Timer_Tick;
+            _timer.Start();
         }
         public readonly DispatcherTimer _timer;
 
@@ -76,7 +93,7 @@ namespace Labb3.ViewModels
                 _timer.Stop();
                 return;
             }
-            ActivePack.TimeLimitInSeconds= ActivePack.TimeLimitInSeconds -= 1;
+            ActivePack.TimeLimitInSeconds = ActivePack.TimeLimitInSeconds -= 1;
             if (ActivePack.TimeLimitInSeconds < 0)
             {
                 _timer.Stop();
@@ -84,14 +101,15 @@ namespace Labb3.ViewModels
         }
 
         private string _demoText;
-       
+
 
         public string DemoText
         {
             get { return _demoText; }
-            set { 
+            set
+            {
                 _demoText = value;
-                RaisePropertyChanged(); 
+                RaisePropertyChanged();
                 SetPackNameCommand.RaiseCanExecuteChanged();
             }
         }
@@ -109,16 +127,16 @@ namespace Labb3.ViewModels
 
                 var newPack = new QuestionPack(vm.NewPack.Name)
                 {
-                    Difficulty= vm.NewPack.Difficulty,
-                    TimeLimitInSeconds= vm.NewPack.TimeLimitInSeconds,
+                    Difficulty = vm.NewPack.Difficulty,
+                    TimeLimitInSeconds = vm.NewPack.TimeLimitInSeconds,
                 };
                 var newPackVM = new QuestionPackViewModel(newPack);
 
                 _mainWindowViewModel.Packs.Add(newPackVM);
                 _mainWindowViewModel.ActivePack = newPackVM;
             }
-        }  
-        
+        }
+
 
         public void packOptions(object? obj)
         {
@@ -161,7 +179,7 @@ namespace Labb3.ViewModels
         public void importQuestionPack(object? obj)
         {
             var dialog = new Microsoft.Win32.OpenFileDialog();
-            
+
             if (dialog.ShowDialog() == true)
             {
                 var json = File.ReadAllText(dialog.FileName);
@@ -175,13 +193,13 @@ namespace Labb3.ViewModels
 
         public void addQuestion(object? obj)
         {
-            ActivePack.Questions.Add(new Question("" , "", "", "", ""));
+            ActivePack.Questions.Add(new Question("", "", "", "", ""));
         }
 
         public void removeQuestion(object? obj)
         {
             if (ActivePack == null || ActivePack == null)
-                return; 
+                return;
 
             else if (ActivePack.SelectedQuestion != null)
             {
@@ -196,7 +214,11 @@ namespace Labb3.ViewModels
 
         private void PlayGame(object? obj)
         {
-            _mainWindowViewModel!.Model = _mainWindowViewModel.PlayerViewModel; 
+            _currentQuestionIndex = 0;
+            ShuffleAnswers();
+            RaisePropertyChanged(nameof(CurrentQuestion));
+            _mainWindowViewModel!.Model = _mainWindowViewModel.PlayerViewModel;
+            ResetButtonColors();
         }
 
         private void EndGame(object? obj)
@@ -227,44 +249,103 @@ namespace Labb3.ViewModels
         {
             ActivePack.Name = DemoText;
         }
-        
 
-        //public void randomiseActivePack()
-        //{
-        //    RandomQuestions = ActivePack?.Questions.ToList() ?? new List<Question>();
-        //    RandomQuestions = RandomQuestions.OrderBy(q => random.Next()).ToList();
 
-        //    if (RandomQuestions.Count > 0)
-        //    {
-        //        CurrentQuestionIndex = 0;
-        //        RaisePropertyChanged(nameof(SelectedQuestion));
-        //        RandomiseActiveQuestionAnswers(CurrentQuestionIndex);
-        //    }
+        private int _currentQuestionIndex;
+        public int CurrentQuestionIndex
+        {
+            get => _currentQuestionIndex;
+            set
+            {
+                _currentQuestionIndex = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(CurrentQuestion));
+                RaisePropertyChanged(nameof(QuestionCounterText));
+            }
+        }
 
-        //    if (ActivePack != null)
-        //    {
-        //        TimeLimitInSeconds = ActivePack.TimeLimitInSeconds;
-        //        _timer.Start();
-        //    }
-        //}
-        //public void randomiseActiveQuestionAnswers(int questionIndex)
-        //{
-        //    if (RandomQuestions == null || RandomQuestions.Count == 0) return;
-        //    var currentQuestion = RandomQuestions[questionIndex];
+        public Question CurrentQuestion => ActivePack.Questions[CurrentQuestionIndex];
 
-        //    var allAnswers = new List<AnswerViewModel>
-        //    {
-        //        new AnswerViewModel(currentQuestion.CorrectAnswer),
-        //        new AnswerViewModel(currentQuestion.IncorrectAnswers[0]),
-        //        new AnswerViewModel(currentQuestion.IncorrectAnswers[1]),
-        //        new AnswerViewModel(currentQuestion.IncorrectAnswers[2])
-        //    };
-        //    AnswerViewModels.Clear();
-        //    foreach (var ans in allAnswers.OrderBy(a => random.Next()))
-        //    {
-        //        AnswerViewModels.Add(ans);
-        //    }
-        //}
-        
+        public string QuestionCounterText =>
+            $"Fråga {CurrentQuestionIndex + 1} av {ActivePack.Questions.Count}";
+
+        private async void CheckAnswer(object chosenIndexObj)
+        {
+            if (!int.TryParse(chosenIndexObj?.ToString(), out int chosenIndex))
+                return;
+
+            bool isCorrect = _shuffledAnswers[chosenIndex].IsCorrect;
+
+            HighlightAnswers();
+
+            await Task.Delay(2000);
+
+            GoToNextQuestion();
+        }
+
+        private void HighlightAnswers()
+        {
+            ButtonColor1 = _shuffledAnswers[0].IsCorrect ? "LightGreen" : "LightCoral";
+            ButtonColor2 = _shuffledAnswers[1].IsCorrect ? "LightGreen" : "LightCoral";
+            ButtonColor3 = _shuffledAnswers[2].IsCorrect ? "LightGreen" : "LightCoral";
+            ButtonColor4 = _shuffledAnswers[3].IsCorrect ? "LightGreen" : "LightCoral";
+
+            RaisePropertyChanged(nameof(ButtonColor1));
+            RaisePropertyChanged(nameof(ButtonColor2));
+            RaisePropertyChanged(nameof(ButtonColor3));
+            RaisePropertyChanged(nameof(ButtonColor4));
+        }
+
+        private void ResetButtonColors()
+        {
+            ButtonColor1 = ButtonColor2 = ButtonColor3 = ButtonColor4 = "LightGray";
+
+            RaisePropertyChanged(nameof(ButtonColor1));
+            RaisePropertyChanged(nameof(ButtonColor2));
+            RaisePropertyChanged(nameof(ButtonColor3));
+            RaisePropertyChanged(nameof(ButtonColor4));
+        }
+
+        private void GoToNextQuestion()
+        {
+            ResetButtonColors();
+
+            if (CurrentQuestionIndex < ActivePack.Questions.Count - 1)
+            {
+                CurrentQuestionIndex++;
+                ShuffleAnswers();
+            }
+            else
+            {
+                _mainWindowViewModel!.Model = _mainWindowViewModel.ConfigurationViewModel;
+            }
+
+        }
+
+        private void ShuffleAnswers()
+        {
+            var q = CurrentQuestion;
+
+            _shuffledAnswers = new List<(string Text, bool IsCorrect)>
+    {
+        (q.CorrectAnswer, true),
+        (q.IncorrectAnswers[0], false),
+        (q.IncorrectAnswers[1], false),
+        (q.IncorrectAnswers[2], false)
+    };
+
+            _shuffledAnswers = _shuffledAnswers.OrderBy(x => Guid.NewGuid()).ToList();
+
+            Answer1 = _shuffledAnswers[0].Text;
+            Answer2 = _shuffledAnswers[1].Text;
+            Answer3 = _shuffledAnswers[2].Text;
+            Answer4 = _shuffledAnswers[3].Text;
+
+            RaisePropertyChanged(nameof(Answer1));
+            RaisePropertyChanged(nameof(Answer2));
+            RaisePropertyChanged(nameof(Answer3));
+            RaisePropertyChanged(nameof(Answer4));
+        }
+
     }
 }
