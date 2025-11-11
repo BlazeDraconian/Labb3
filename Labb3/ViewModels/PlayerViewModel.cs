@@ -41,17 +41,56 @@ namespace Labb3.ViewModels
 
         public DelegateCommand AnswerCommand { get; }
 
-        private List<(string Text, bool IsCorrect)> _shuffledAnswers;
+        private List<(string Text, bool IsCorrect)> _shuffledAnswers = new();
 
         public string ButtonColor1 { get; set; } = "LightGray";
         public string ButtonColor2 { get; set; } = "LightGray";
         public string ButtonColor3 { get; set; } = "LightGray";
         public string ButtonColor4 { get; set; } = "LightGray";
 
-        public string Answer1 { get; set; }
-        public string Answer2 { get; set; }
-        public string Answer3 { get; set; }
-        public string Answer4 { get; set; }
+        private string _answer1;
+        public string Answer1
+        {
+            get => _answer1;
+            set
+            {
+                _answer1 = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private string _answer2;
+        public string Answer2
+        {
+            get => _answer2;
+            set
+            {
+                _answer2 = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private string _answer3;
+        public string Answer3
+        {
+            get => _answer3;
+            set
+            {
+                _answer3 = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private string _answer4;
+        public string Answer4
+        {
+            get => _answer4;
+            set
+            {
+                _answer4 = value;
+                RaisePropertyChanged();
+            }
+        }
 
 
 
@@ -215,9 +254,11 @@ namespace Labb3.ViewModels
         private void PlayGame(object? obj)
         {
             _currentQuestionIndex = 0;
+            _mainWindowViewModel!.Model = _mainWindowViewModel.PlayerViewModel;
             ShuffleAnswers();
             RaisePropertyChanged(nameof(CurrentQuestion));
-            _mainWindowViewModel!.Model = _mainWindowViewModel.PlayerViewModel;
+            RaisePropertyChanged(nameof(QuestionCounterText));
+
             ResetButtonColors();
         }
 
@@ -261,6 +302,7 @@ namespace Labb3.ViewModels
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(CurrentQuestion));
                 RaisePropertyChanged(nameof(QuestionCounterText));
+                ShuffleAnswers();
             }
         }
 
@@ -271,14 +313,23 @@ namespace Labb3.ViewModels
 
         private async void CheckAnswer(object chosenIndexObj)
         {
-            if (!int.TryParse(chosenIndexObj?.ToString(), out int chosenIndex))
+            if (chosenIndexObj == null)
+                return;
+
+            if (!int.TryParse(chosenIndexObj.ToString(), out int chosenIndex))
+                return;
+
+            if (_shuffledAnswers == null || _shuffledAnswers.Count == 0)
+                return;
+
+            if (chosenIndex < 0 || chosenIndex >= _shuffledAnswers.Count)
                 return;
 
             bool isCorrect = _shuffledAnswers[chosenIndex].IsCorrect;
 
             HighlightAnswers();
 
-            await Task.Delay(2000);
+            await Task.Delay(5000);
 
             GoToNextQuestion();
         }
@@ -324,28 +375,23 @@ namespace Labb3.ViewModels
 
         private void ShuffleAnswers()
         {
-            var q = CurrentQuestion;
+                var q = CurrentQuestion;
 
-            _shuffledAnswers = new List<(string Text, bool IsCorrect)>
+                _shuffledAnswers = new List<(string Text, bool IsCorrect)>
     {
-        (q.CorrectAnswer, true),
-        (q.IncorrectAnswers[0], false),
-        (q.IncorrectAnswers[1], false),
-        (q.IncorrectAnswers[2], false)
+            (q.CorrectAnswer??"", true),
+            (q.IncorrectAnswers[0]?? "", false),
+            (q.IncorrectAnswers[1]?? "",false),
+            (q.IncorrectAnswers[2]?? "", false)
     };
 
-            _shuffledAnswers = _shuffledAnswers.OrderBy(x => Guid.NewGuid()).ToList();
+                _shuffledAnswers = _shuffledAnswers.OrderBy(x => Guid.NewGuid()).ToList();
 
-            Answer1 = _shuffledAnswers[0].Text;
-            Answer2 = _shuffledAnswers[1].Text;
-            Answer3 = _shuffledAnswers[2].Text;
-            Answer4 = _shuffledAnswers[3].Text;
+                Answer1 = _shuffledAnswers[0].Text;
+                Answer2 = _shuffledAnswers[1].Text;
+                Answer3 = _shuffledAnswers[2].Text;
+                Answer4 = _shuffledAnswers[3].Text;
 
-            RaisePropertyChanged(nameof(Answer1));
-            RaisePropertyChanged(nameof(Answer2));
-            RaisePropertyChanged(nameof(Answer3));
-            RaisePropertyChanged(nameof(Answer4));
         }
-
     }
 }
