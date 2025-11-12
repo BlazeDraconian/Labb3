@@ -20,7 +20,7 @@
             <StackPanel>
 
                 <TextBlock
-                    Text="{Binding ActivePack.Name}"
+                    Text="{Binding ActivePack.Name, UpdateSourceTrigger=PropertyChanged}"
                     FontWeight="Bold"
                     FontSize="12"
                     Margin="0,30,0,0"/>

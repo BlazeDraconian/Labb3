@@ -10,7 +10,9 @@ namespace Labb3.ViewModels
 
         public class QuestionPackViewModel : ViewModelBase
         {
+        
         private readonly QuestionPack _model;
+        public QuestionPack Model => _model;
         public QuestionPackViewModel(QuestionPack model)
         {
             _model = model;

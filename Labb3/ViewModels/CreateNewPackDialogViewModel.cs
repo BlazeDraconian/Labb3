@@ -14,7 +14,7 @@ namespace Labb3.ViewModels
         public DelegateCommand CreateCommand { get; }
         public DelegateCommand CancelCommand { get; }
 
-
+        public Array Difficulties => Enum.GetValues(typeof(Difficulty));
 
         private bool? _dialogResult;
         public bool? DialogResult
@@ -38,13 +38,11 @@ namespace Labb3.ViewModels
         private void Create(object? obj)
         {
             DialogResult = true;
-
         }
 
         private void Cancel(object? obj)
         {
             DialogResult = false;
-
         }
 
         public CreateNewPackDialogViewModel(QuestionPackViewModel existingPack)
@@ -55,20 +53,20 @@ namespace Labb3.ViewModels
 
             CreateCommand = new DelegateCommand((_) =>
             {
-
                 existingPack.Name = NewPack.Name;
                 existingPack.Difficulty = NewPack.Difficulty;
                 existingPack.TimeLimitInSeconds = NewPack.TimeLimitInSeconds;
 
                 DialogResult = true;
-                RaisePropertyChanged(nameof(DialogResult));
             });
 
             CancelCommand = new DelegateCommand((_) =>
             {
                 DialogResult = false;
-                RaisePropertyChanged(nameof(DialogResult));
             });
+
+
+
         }
     }
 }

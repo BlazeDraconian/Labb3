@@ -23,6 +23,13 @@ namespace Labb3.Views
         public MenuView()
         {
             InitializeComponent();
+
+
+        }
+
+        private void SelectQuestionPack_Click(object sender, RoutedEventArgs e)
+        {
+            //PackPopup.IsOpen = !PackPopup.IsOpen;
         }
     }
 }

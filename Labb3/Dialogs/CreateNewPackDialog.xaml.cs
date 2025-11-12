@@ -32,8 +32,17 @@ namespace Labb3.Dialogs
         }
         public CreateNewPackDialog(QuestionPackViewModel existingPack) : this()
         {
+            InitializeComponent();
             ViewModel = new CreateNewPackDialogViewModel(existingPack);
             DataContext = ViewModel;
+            ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+            CreateButton.Content = "Update";
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = false;
+            this.Close();
         }
 
         private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -51,6 +60,7 @@ namespace Labb3.Dialogs
 
 
         }
+
 
     }
 

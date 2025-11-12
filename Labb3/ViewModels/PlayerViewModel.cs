@@ -4,6 +4,8 @@ using Labb3.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,6 +19,7 @@ namespace Labb3.ViewModels
     {
         private readonly MainWindowViewModel? _mainWindowViewModel;
 
+        public ObservableCollection<QuestionPackViewModel> Packs { get; set; } = new();
         public DelegateCommand RandomiseActiveQuestionAnswers { get; }
         public DelegateCommand RandomiseActivePack { get; }
         public DelegateCommand SetPackNameCommand { get; }
@@ -113,8 +116,7 @@ namespace Labb3.ViewModels
             EditQuestion = new DelegateCommand(editQuestion);
             FullScreen = new DelegateCommand(fullScreen);
             AnswerCommand = new DelegateCommand(CheckAnswer);
-            //RandomiseActivePack = new DelegateCommand(randomiseActivePack);
-            //RandomiseActiveQuestionAnswers = new DelegateCommand(randomiseActiveQuestionAnswers);
+            
 
 
             DemoText = string.Empty;
@@ -127,7 +129,7 @@ namespace Labb3.ViewModels
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
-            if (ActivePack == null)
+            if (ActivePack == null || _mainWindowViewModel.Model == _mainWindowViewModel.ConfigurationViewModel)
             {
                 _timer.Stop();
                 return;
@@ -173,6 +175,8 @@ namespace Labb3.ViewModels
 
                 _mainWindowViewModel.Packs.Add(newPackVM);
                 _mainWindowViewModel.ActivePack = newPackVM;
+                _mainWindowViewModel.SavePacksToFile();
+
             }
         }
 
@@ -188,14 +192,16 @@ namespace Labb3.ViewModels
             _mainWindowViewModel.ActivePack.RaisePropertyChanged(nameof(_mainWindowViewModel.ActivePack.Name));
             _mainWindowViewModel.ActivePack.RaisePropertyChanged(nameof(_mainWindowViewModel.ActivePack.Difficulty));
             _mainWindowViewModel.ActivePack.RaisePropertyChanged(nameof(_mainWindowViewModel.ActivePack.TimeLimitInSeconds));
+
         }
 
         public void selectQuestionPack(object? obj)
         {
             _mainWindowViewModel!.Model = _mainWindowViewModel.ConfigurationViewModel;
+            _mainWindowViewModel.ActivePack = (QuestionPackViewModel)obj;
         }
 
-        public void deleteQuestionPack(object? obj)
+        private void deleteQuestionPack(object? obj)
         {
             if (_mainWindowViewModel is null)
             {
@@ -203,6 +209,7 @@ namespace Labb3.ViewModels
             }
 
             _mainWindowViewModel.Packs.Remove(_mainWindowViewModel.ActivePack);
+            _mainWindowViewModel.SavePacksToFile();
 
             if (_mainWindowViewModel.Packs.Any())
             {

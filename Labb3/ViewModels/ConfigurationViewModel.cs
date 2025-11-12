@@ -17,7 +17,6 @@ namespace Labb3.ViewModels
         {
             this._mainWindowViewModel = mainWindowViewModel;
 
-            ChoosePackCommand = new DelegateCommand(ChoosePack);
         }
 
         public QuestionPackViewModel? ActivePack
