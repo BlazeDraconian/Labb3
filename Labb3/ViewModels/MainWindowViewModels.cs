@@ -71,7 +71,7 @@ namespace Labb3.ViewModels
            
             var pack = new QuestionPack("MyQuestionPack");
             ActivePack = new QuestionPackViewModel(pack);
-			ActivePack.Questions.Add(new Question($"Vad heter Sveriges huvudstad?", "Stockholm", "Göteborg", " Malmö", "Helsingborg"));
+			//ActivePack.Questions.Add(new Question($"Vad heter Sveriges huvudstad?", "Stockholm", "Göteborg", " Malmö", "Helsingborg"));
             Model = ConfigurationViewModel;
             PlayCommand = new DelegateCommand(PlayGame);
             LoadPacksFromFile();
@@ -82,6 +82,7 @@ namespace Labb3.ViewModels
         private void PlayGame(object? obj)
         {
             Model = PlayerViewModel;
+            PlayerViewModel.StartGame();
         }
 
 

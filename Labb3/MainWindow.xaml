@@ -13,6 +13,7 @@
         <viewmodels:MainWindowViewModel/>
     </Window.DataContext>
 
+    
     <Window.Resources>
 
         <DataTemplate DataType="{x:Type viewmodels:ConfigurationViewModel}">
@@ -26,6 +27,20 @@
 
     </Window.Resources>
 
+
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding PlayerViewModel.NewQuestionPack}" Gesture="Ctrl+N" />
+        <KeyBinding Command="{Binding PlayerViewModel.DeleteQuestionPack}" Gesture="Delete" />
+        <KeyBinding Command="{Binding PlayerViewModel.ImportQuestionPack}" Gesture="Ctrl+I" />
+        <KeyBinding Command="{Binding PlayerViewModel.EditQuestion}" Gesture="Ctrl+E" />
+        <KeyBinding Command="{Binding PlayerViewModel.EditQuestion}" Gesture="Ctrl+E" />
+        <KeyBinding Command="{Binding PlayerViewModel.FullScreen}" Gesture="F11" />
+        <KeyBinding Command="{Binding PlayerViewModel.RemoveQuestion}" Gesture="Ctrl+R" />
+        <KeyBinding Command="{Binding PlayerViewModel.PackOptions}" Gesture="Ctrl+Shift" />
+        <KeyBinding Command="{Binding PlayerViewModel.PlayCommand}" Gesture="Ctrl+P" />
+        <KeyBinding Command="{Binding PlayerViewModel.ExitCommand}" Gesture="Esc" />
+        <KeyBinding Command="{Binding PlayerViewModel.AddQuestion}" Gesture="Insert" />
+    </Window.InputBindings>
 
     <Grid>
         <Grid.RowDefinitions>

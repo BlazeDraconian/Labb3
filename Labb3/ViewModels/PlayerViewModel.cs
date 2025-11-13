@@ -6,11 +6,13 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace Labb3.ViewModels
@@ -46,55 +48,39 @@ namespace Labb3.ViewModels
 
         private List<(string Text, bool IsCorrect)> _shuffledAnswers = new();
 
-        public string ButtonColor1 { get; set; } = "LightGray";
-        public string ButtonColor2 { get; set; } = "LightGray";
-        public string ButtonColor3 { get; set; } = "LightGray";
-        public string ButtonColor4 { get; set; } = "LightGray";
+        private Brush _buttonColor1 = Brushes.LightGray;
+        private Brush _buttonColor2 = Brushes.LightGray;
+        private Brush _buttonColor3 = Brushes.LightGray;
+        private Brush _buttonColor4 = Brushes.LightGray;
 
-        private string _answer1;
-        public string Answer1
+        public Brush ButtonColor1
         {
-            get => _answer1;
-            set
-            {
-                _answer1 = value;
-                RaisePropertyChanged();
-            }
+            get => _buttonColor1;
+            set { _buttonColor1 = value; RaisePropertyChanged(); }
+        }
+        public Brush ButtonColor2
+        {
+            get => _buttonColor2;
+            set { _buttonColor2 = value; RaisePropertyChanged(); }
+        }
+        public Brush ButtonColor3
+        {
+            get => _buttonColor3;
+            set { _buttonColor3 = value; RaisePropertyChanged(); }
+        }
+        public Brush ButtonColor4
+        {
+            get => _buttonColor4;
+            set { _buttonColor4 = value; RaisePropertyChanged(); }
         }
 
-        private string _answer2;
-        public string Answer2
-        {
-            get => _answer2;
-            set
-            {
-                _answer2 = value;
-                RaisePropertyChanged();
-            }
-        }
 
-        private string _answer3;
-        public string Answer3
-        {
-            get => _answer3;
-            set
-            {
-                _answer3 = value;
-                RaisePropertyChanged();
-            }
-        }
+        public string Answer1 { get; set; }
+        public string Answer2 { get; set; }
 
-        private string _answer4;
-        public string Answer4
-        {
-            get => _answer4;
-            set
-            {
-                _answer4 = value;
-                RaisePropertyChanged();
-            }
-        }
+        public string Answer3 { get; set; }
 
+        public string Answer4 { get; set; }
 
 
         public QuestionPackViewModel ActivePack { get => _mainWindowViewModel.ActivePack; }
@@ -115,7 +101,7 @@ namespace Labb3.ViewModels
             RemoveQuestion = new DelegateCommand(removeQuestion);
             EditQuestion = new DelegateCommand(editQuestion);
             FullScreen = new DelegateCommand(fullScreen);
-            AnswerCommand = new DelegateCommand(CheckAnswer);
+            AnswerCommand = new DelegateCommand(HandleAnswer);
             
 
 
@@ -239,7 +225,20 @@ namespace Labb3.ViewModels
 
         public void addQuestion(object? obj)
         {
-            ActivePack.Questions.Add(new Question("", "", "", "", ""));
+            if (_mainWindowViewModel?.ActivePack == null)
+                return;
+
+            var newQuestion = new Question
+            {
+                Query = "",
+                CorrectAnswer = "",
+                IncorrectAnswer1 = "",
+                IncorrectAnswer2 = "",
+                IncorrectAnswer3 = ""
+            };
+
+            _mainWindowViewModel.ActivePack.Questions.Add(newQuestion);
+            _mainWindowViewModel.SavePacksToFile();
         }
 
         public void removeQuestion(object? obj)
@@ -262,6 +261,7 @@ namespace Labb3.ViewModels
         {
             _currentQuestionIndex = 0;
             _mainWindowViewModel!.Model = _mainWindowViewModel.PlayerViewModel;
+            
             ShuffleAnswers();
             RaisePropertyChanged(nameof(CurrentQuestion));
             RaisePropertyChanged(nameof(QuestionCounterText));
@@ -306,9 +306,11 @@ namespace Labb3.ViewModels
             set
             {
                 _currentQuestionIndex = value;
+                ActivePack.SelectedQuestion = CurrentQuestion;
                 RaisePropertyChanged();
                 RaisePropertyChanged(nameof(CurrentQuestion));
                 RaisePropertyChanged(nameof(QuestionCounterText));
+                RaisePropertyChanged(nameof(ActivePack.SelectedQuestion));
                 ShuffleAnswers();
             }
         }
@@ -338,15 +340,15 @@ namespace Labb3.ViewModels
 
             await Task.Delay(5000);
 
-            GoToNextQuestion();
+            NextQuestion();
         }
 
         private void HighlightAnswers()
         {
-            ButtonColor1 = _shuffledAnswers[0].IsCorrect ? "LightGreen" : "LightCoral";
-            ButtonColor2 = _shuffledAnswers[1].IsCorrect ? "LightGreen" : "LightCoral";
-            ButtonColor3 = _shuffledAnswers[2].IsCorrect ? "LightGreen" : "LightCoral";
-            ButtonColor4 = _shuffledAnswers[3].IsCorrect ? "LightGreen" : "LightCoral";
+            ButtonColor1 = _shuffledAnswers[0].IsCorrect ? Brushes.LightGreen : Brushes.LightCoral;
+            ButtonColor2 = _shuffledAnswers[1].IsCorrect ? Brushes.LightGreen : Brushes.LightCoral;
+            ButtonColor3 = _shuffledAnswers[2].IsCorrect ? Brushes.LightGreen : Brushes.LightCoral;
+            ButtonColor4 = _shuffledAnswers[3].IsCorrect ? Brushes.LightGreen : Brushes.LightCoral;
 
             RaisePropertyChanged(nameof(ButtonColor1));
             RaisePropertyChanged(nameof(ButtonColor2));
@@ -356,7 +358,7 @@ namespace Labb3.ViewModels
 
         private void ResetButtonColors()
         {
-            ButtonColor1 = ButtonColor2 = ButtonColor3 = ButtonColor4 = "LightGray";
+            ButtonColor1 = ButtonColor2 = ButtonColor3 = ButtonColor4 = Brushes.LightGray;
 
             RaisePropertyChanged(nameof(ButtonColor1));
             RaisePropertyChanged(nameof(ButtonColor2));
@@ -364,20 +366,90 @@ namespace Labb3.ViewModels
             RaisePropertyChanged(nameof(ButtonColor4));
         }
 
-        private void GoToNextQuestion()
+
+        public void StartGame()
         {
+            if (ActivePack == null || ActivePack.Questions.Count == 0)
+                return;
+
+            if (ActivePack.SelectedQuestion == null)
+                ActivePack.SelectedQuestion = ActivePack.Questions[0];
+
+            _currentQuestionIndex = ActivePack.Questions.IndexOf(ActivePack.SelectedQuestion);
+
+            LoadQuestion(ActivePack.SelectedQuestion);
+        }
+
+        private void LoadQuestion(Question q)
+        {
+            var answers = new List<(string Text, bool IsCorrect)>
+        {
+            (q.CorrectAnswer, true),
+            (q.IncorrectAnswer1, false),
+            (q.IncorrectAnswer2, false),
+            (q.IncorrectAnswer3, false)
+        };
+
+            _shuffledAnswers = answers.OrderBy(a => Guid.NewGuid()).ToList();
+
+            Answer1 = _shuffledAnswers[0].Text;
+            Answer2 = _shuffledAnswers[1].Text;
+            Answer3 = _shuffledAnswers[2].Text;
+            Answer4 = _shuffledAnswers[3].Text;
+
             ResetButtonColors();
 
-            if (CurrentQuestionIndex < ActivePack.Questions.Count - 1)
+            RaisePropertyChanged(nameof(Answer1));
+            RaisePropertyChanged(nameof(Answer2));
+            RaisePropertyChanged(nameof(Answer3));
+            RaisePropertyChanged(nameof(Answer4));
+        }
+
+        private async void HandleAnswer(object? chosenIndexObj)
+        {
+            if (chosenIndexObj == null || _shuffledAnswers == null)
+                return;
+
+            int chosenIndex = int.Parse(chosenIndexObj.ToString());
+            bool isCorrect = _shuffledAnswers[chosenIndex].IsCorrect;
+
+            for (int i = 0; i < 4; i++)
             {
-                CurrentQuestionIndex++;
-                ShuffleAnswers();
-            }
-            else
-            {
-                _mainWindowViewModel!.Model = _mainWindowViewModel.ConfigurationViewModel;
+                var color = _shuffledAnswers[i].IsCorrect ? Brushes.LightGreen : Brushes.IndianRed;
+                switch (i)
+                {
+                    case 0: ButtonColor1 = color; break;
+                    case 1: ButtonColor2 = color; break;
+                    case 2: ButtonColor3 = color; break;
+                    case 3: ButtonColor4 = color; break;
+                }
             }
 
+            RaisePropertyChanged(nameof(ButtonColor1));
+            RaisePropertyChanged(nameof(ButtonColor2));
+            RaisePropertyChanged(nameof(ButtonColor3));
+            RaisePropertyChanged(nameof(ButtonColor4));
+
+            await Task.Delay(2000); 
+            NextQuestion();
+        }
+
+        private void NextQuestion()
+        {
+            _currentQuestionIndex++;
+            if (_currentQuestionIndex >= ActivePack.Questions.Count)
+            {
+                _mainWindowViewModel.Model = _mainWindowViewModel.ConfigurationViewModel;
+                return;
+            }
+
+            var next = ActivePack.Questions[_currentQuestionIndex];
+            ActivePack.SelectedQuestion = next;
+            LoadQuestion(next);
+
+            RaisePropertyChanged(nameof(CurrentQuestion));
+            RaisePropertyChanged(nameof(QuestionCounterText));
+            RaisePropertyChanged(nameof(ActivePack));
         }
 
         private void ShuffleAnswers()
@@ -387,9 +459,9 @@ namespace Labb3.ViewModels
                 _shuffledAnswers = new List<(string Text, bool IsCorrect)>
     {
             (q.CorrectAnswer??"", true),
-            (q.IncorrectAnswers[0]?? "", false),
-            (q.IncorrectAnswers[1]?? "",false),
-            (q.IncorrectAnswers[2]?? "", false)
+            (q.IncorrectAnswer1?? "", false),
+            (q.IncorrectAnswer2?? "",false),
+            (q.IncorrectAnswer3?? "", false)
     };
 
                 _shuffledAnswers = _shuffledAnswers.OrderBy(x => Guid.NewGuid()).ToList();

@@ -16,7 +16,7 @@ namespace Labb3.ViewModels
         public ConfigurationViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this._mainWindowViewModel = mainWindowViewModel;
-
+            
         }
 
         public QuestionPackViewModel? ActivePack

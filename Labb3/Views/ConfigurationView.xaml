@@ -53,13 +53,13 @@
                 <TextBox Text="{Binding ActivePack.SelectedQuestion.CorrectAnswer, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,0"/>
 
                 <TextBlock Text="First Incorrect Answer:" FontWeight="Bold"/>
-                <TextBox Text="{Binding ActivePack.SelectedQuestion.IncorrectAnswers[0], UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,0"/>
+                <TextBox Text="{Binding ActivePack.SelectedQuestion.IncorrectAnswer1, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,0"/>
 
                 <TextBlock Text="Second Incorrect Answer:" FontWeight="Bold"/>
-                <TextBox Text="{Binding ActivePack.SelectedQuestion.IncorrectAnswers[1], UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,0"/>
+                <TextBox Text="{Binding ActivePack.SelectedQuestion.IncorrectAnswer2, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,0"/>
 
                 <TextBlock Text="Third Incorrect Answer:" FontWeight="Bold"/>
-                <TextBox Text="{Binding ActivePack.SelectedQuestion.IncorrectAnswers[2], UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,0"/>
+                <TextBox Text="{Binding ActivePack.SelectedQuestion.IncorrectAnswer3, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,0"/>
 
             </StackPanel>
             

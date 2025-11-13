@@ -13,7 +13,7 @@
             <MenuItem Header="Select Question Pack" 
                       x:Name="SelectButton"  
                       InputGestureText="Ctrl+S" 
-                      ItemsSource="{Binding Packs}"
+                       ItemsSource="{Binding Packs}"
                       FontFamily="./#fontawesome-free-7.1.0-desktop" 
                       Icon="&#xf07c;">
 
@@ -39,41 +39,6 @@
                     </Style>
                 </MenuItem.ItemContainerStyle>
             </MenuItem>
-            
-            
-
-            <!--<Popup x:Name="PackPopup"
-       Placement="Bottom"
-       PlacementTarget="{Binding ElementName=SelectButton}"
-       StaysOpen="False"
-       AllowsTransparency="True">
-
-                <Border Background="White" 
-            BorderBrush="Gray" 
-            BorderThickness="1" 
-            CornerRadius="8" 
-            Padding="10">
-                    <StackPanel>
-                        <TextBlock Text="Available Packs" 
-                       FontWeight="Bold" 
-                       Margin="0,0,0,10" />
-                        <ItemsControl ItemsSource="{Binding Packs}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Button Content="{Binding Name}"
-                                Command="{Binding DataContext.ChoosePackCommand,
-                                          RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                CommandParameter="{Binding}" 
-                                Margin="0,5,0,0" />
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-                </Border>
-            </Popup>-->
-
-
-
 
             <MenuItem Header="Delete Question Pack" InputGestureText="Delete" Command="{Binding PlayerViewModel.DeleteQuestionPack}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf1f8;"/> 
             <Separator/>
@@ -93,7 +58,7 @@
         </MenuItem>
 
         <MenuItem Header="View">
-            <MenuItem Header="Play" InputGestureText="P" Command="{Binding DataContext.PlayCommand, RelativeSource= {RelativeSource AncestorType=Window}}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf04b;"/>
+            <MenuItem Header="Play" InputGestureText="Ctrl+P" Command="{Binding DataContext.PlayCommand, RelativeSource= {RelativeSource AncestorType=Window}}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf04b;"/>
             <MenuItem Header="Exit Game And Edit Question" InputGestureText="Ctrl+E" Command ="{Binding PlayerViewModel.EditQuestion}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf304;"/>
           
             <Separator/>
