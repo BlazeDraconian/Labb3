@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:Labb3"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <FontFamily x:Key="FA">
+            /Fonts/fontawesome-free-7.1.0-desktop/otfs/Font Awesome 7 Free-Solid-900.otf#Font Awesome 7 Free Solid
+        </FontFamily>
     </Application.Resources>
 </Application>

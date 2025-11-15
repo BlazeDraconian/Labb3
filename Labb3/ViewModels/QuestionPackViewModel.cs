@@ -12,12 +12,15 @@ namespace Labb3.ViewModels
         {
         
         private readonly QuestionPack _model;
-       
+        public int OriginalTimeLimitInSeconds { get; set; }
+
         public QuestionPackViewModel(QuestionPack model)
         {
             _model = model;
+            OriginalTimeLimitInSeconds = model.TimeLimitInSeconds;
             Questions = new ObservableCollection<Question>(_model.Questions);
             Questions.CollectionChanged += Questions_CollectionChanged;
+
 
             foreach (var q in Questions)
                 q.PropertyChanged += Question_PropertyChanged;
@@ -88,7 +91,7 @@ namespace Labb3.ViewModels
                
             }
         }
-
+        
         private Question? _selectedQuestion;
 
         public Question? SelectedQuestion

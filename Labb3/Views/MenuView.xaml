@@ -6,65 +6,145 @@
              xmlns:local="clr-namespace:Labb3.Views" xmlns:viewmodels="clr-namespace:Labb3.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Menu>
+ 
 
-        <MenuItem Header="_File">
-            <MenuItem Header="_New Question Pack" InputGestureText="Ctrl+N" Command="{Binding PlayerViewModel.NewQuestionPack }" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf044;"/>
-            <MenuItem Header="Select Question Pack" 
-                      x:Name="SelectButton"  
-                      InputGestureText="Ctrl+S" 
-                       ItemsSource="{Binding Packs}"
-                      FontFamily="./#fontawesome-free-7.1.0-desktop" 
-                      Icon="&#xf07c;">
+        <Menu>
 
-                <MenuItem.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock>
-            <Run Text="{Binding Name}" />
-            <Run Text=" - " />
-            <Run Text="{Binding Difficulty}" />
-            <Run Text=" (" />
-            <Run Text="{Binding TimeLimitInSeconds}" />
-            <Run Text="s)" />
-                        </TextBlock>
-                    </DataTemplate>
-                </MenuItem.ItemTemplate>
+           
+            <MenuItem Header="_File">
 
-                <MenuItem.ItemContainerStyle>
-                    <Style TargetType="MenuItem">
-                        <Setter Property="Command"
-                Value="{Binding DataContext.PlayerViewModel.SelectQuestionPack,
-                                RelativeSource={RelativeSource AncestorType=Window}}" />
-                        <Setter Property="CommandParameter" Value="{Binding}" />
-                    </Style>
-                </MenuItem.ItemContainerStyle>
+                
+                <MenuItem Header="_New Question Pack" InputGestureText="Ctrl+N"
+                      Command="{Binding PlayerViewModel.NewQuestionPack}">
+                    <MenuItem.Icon>
+                    <TextBlock FontFamily="{StaticResource FA}" Text="&#xf044;"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                
+                <MenuItem Header="Select Question Pack"
+                      x:Name="SelectButton"
+                      InputGestureText="Ctrl+S"
+                      ItemsSource="{Binding Packs}">
+
+                    <MenuItem.Icon>
+                    <TextBlock FontFamily="{StaticResource FA}" Text="&#xf07c;"/>
+                    </MenuItem.Icon>
+
+                    <MenuItem.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                            <Run Text="{Binding Name}" />
+                            <Run Text=" - " />
+                            <Run Text="{Binding Difficulty}" />
+                            <Run Text=" (" />
+                            <Run Text="{Binding TimeLimitInSeconds}" />
+                            <Run Text="s)" />
+                            </TextBlock>
+                        </DataTemplate>
+                    </MenuItem.ItemTemplate>
+
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Command"
+                                Value="{Binding DataContext.PlayerViewModel.SelectQuestionPack,
+                                                RelativeSource={RelativeSource AncestorType=Window}}" />
+                            <Setter Property="CommandParameter" Value="{Binding}" />
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
+
+               
+                <MenuItem Header="Delete Question Pack" InputGestureText="Delete"
+                      Command="{Binding PlayerViewModel.DeleteQuestionPack}">
+                    <MenuItem.Icon>
+                    <TextBlock FontFamily="{StaticResource FA}" Text="&#xf1f8;"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <Separator/>
+
+                
+                <MenuItem Header="Import Question Pack" InputGestureText="Ctrl+I"
+                      Command="{Binding PlayerViewModel.ImportQuestionPack}">
+                    <MenuItem.Icon>
+                    <TextBlock FontFamily="{StaticResource FA}" Text="&#xf019;"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <Separator/>
+
+                
+                <MenuItem Header="E_xit" InputGestureText="Esc"
+                      Command="{Binding PlayerViewModel.ExitCommand}">
+                    <MenuItem.Icon>
+                    <TextBlock FontFamily="{StaticResource FA}" Text="&#xf52b;"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
 
-            <MenuItem Header="Delete Question Pack" InputGestureText="Delete" Command="{Binding PlayerViewModel.DeleteQuestionPack}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf1f8;"/> 
-            <Separator/>
-            <MenuItem Header="Import Question Pack" InputGestureText="Ctrl+I" Command="{Binding PlayerViewModel.ImportQuestionPack}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf019;" />
-            <Separator/>
-            <MenuItem Header="E_xit" InputGestureText="Esc" Command="{Binding PlayerViewModel.ExitCommand}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf52b;"/>
-        </MenuItem>
-        
-        <MenuItem Header="_Edit">
-            <MenuItem Header="Add Question" InputGestureText="Insert"  Command="{Binding PlayerViewModel.AddQuestion}"  FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#x2b;"/>
-            <Separator/>
-            <MenuItem Header="Remove Question" InputGestureText="Ctrl+R" Command="{Binding PlayerViewModel.RemoveQuestion}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf068;" />
-            <Separator/>
             
+            <MenuItem Header="_Edit">
 
-            <MenuItem Header="Pack Options" InputGestureText="Ctrl+Shift" Command="{Binding PlayerViewModel.PackOptions}" FontFamily="./#fontawesome-free-7.1.0-desktop"/> 
-        </MenuItem>
+                <MenuItem Header="Add Question" InputGestureText="Insert"
+                      Command="{Binding PlayerViewModel.AddQuestion}">
+                    <MenuItem.Icon>
+                    <TextBlock FontFamily="{StaticResource FA}" Text="&#xf067;"/>
+                        
+                    </MenuItem.Icon>
+                </MenuItem>
 
-        <MenuItem Header="View">
-            <MenuItem Header="Play" InputGestureText="Ctrl+P" Command="{Binding DataContext.PlayCommand, RelativeSource= {RelativeSource AncestorType=Window}}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf04b;"/>
-            <MenuItem Header="Exit Game And Edit Question" InputGestureText="Ctrl+E" Command ="{Binding PlayerViewModel.EditQuestion}" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf304;"/>
-          
-            <Separator/>
-            <MenuItem Header="Fullscreen" InputGestureText="F11" Command="{Binding PlayerViewModel.FullScreen }" FontFamily="./#fontawesome-free-7.1.0-desktop" Icon="&#xf065;"/>
+                <Separator/>
 
-        </MenuItem>
+                <MenuItem Header="Remove Question" InputGestureText="Ctrl+R"
+                      Command="{Binding PlayerViewModel.RemoveQuestion}">
+                    <MenuItem.Icon>
+                    <TextBlock FontFamily="{StaticResource FA}" Text="&#xf068;"/>
+                    </MenuItem.Icon>
+                </MenuItem>
 
-    </Menu>
-</UserControl>
+                <Separator/>
+
+                <MenuItem Header="Pack Options" InputGestureText="Ctrl+Shift"
+                      Command="{Binding PlayerViewModel.PackOptions}">
+                    <MenuItem.Icon>
+                    <TextBlock FontFamily="{StaticResource FA}" Text="&#xf013;"/>
+                      
+                    </MenuItem.Icon>
+                </MenuItem>
+
+            </MenuItem>
+
+            
+            <MenuItem Header="View">
+
+                <MenuItem Header="Play" InputGestureText="Ctrl+P"
+                      Command="{Binding DataContext.PlayCommand, RelativeSource= {RelativeSource AncestorType=Window}}">
+                    <MenuItem.Icon>
+                    <TextBlock FontFamily="{StaticResource FA}" Text="&#xf04b;"/>
+                       
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <MenuItem Header="Exit Game And Edit Question" InputGestureText="Ctrl+E"
+                      Command ="{Binding PlayerViewModel.EditQuestion}">
+                    <MenuItem.Icon>
+                        <TextBlock FontFamily="{StaticResource FA}" Text="&#xf304;"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+                <Separator/>
+
+                <MenuItem Header="Fullscreen" InputGestureText="F11"
+                      Command="{Binding PlayerViewModel.FullScreen}">
+                    <MenuItem.Icon>
+                    <TextBlock FontFamily="{StaticResource FA}" Text="&#xf065;"/>
+                        
+                    </MenuItem.Icon>
+                </MenuItem>
+
+            </MenuItem>
+
+        </Menu>
+
+    </UserControl>

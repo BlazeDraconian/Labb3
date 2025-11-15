@@ -21,6 +21,13 @@ namespace Labb3.ViewModels
     {
         private readonly MainWindowViewModel? _mainWindowViewModel;
 
+        private int _score = 0;
+        public int Score
+        {
+            get => _score;
+            set { _score = value; RaisePropertyChanged(); }
+        }
+
         public ObservableCollection<QuestionPackViewModel> Packs { get; set; } = new();
         public DelegateCommand RandomiseActiveQuestionAnswers { get; }
         public DelegateCommand RandomiseActivePack { get; }
@@ -52,6 +59,8 @@ namespace Labb3.ViewModels
         private Brush _buttonColor2 = Brushes.LightGray;
         private Brush _buttonColor3 = Brushes.LightGray;
         private Brush _buttonColor4 = Brushes.LightGray;
+
+        private List<Question> _playQuestions;
 
         public Brush ButtonColor1
         {
@@ -109,21 +118,40 @@ namespace Labb3.ViewModels
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Tick += Timer_Tick;
-            _timer.Start();
+           
         }
         public readonly DispatcherTimer _timer;
 
-        private void Timer_Tick(object? sender, EventArgs e)
+
+
+       
+            private void Timer_Tick(object? sender, EventArgs e)
         {
-            if (ActivePack == null || _mainWindowViewModel.Model == _mainWindowViewModel.ConfigurationViewModel)
-            {
-                _timer.Stop();
+            if (_mainWindowViewModel == null)
                 return;
-            }
-            ActivePack.TimeLimitInSeconds = ActivePack.TimeLimitInSeconds -= 1;
-            if (ActivePack.TimeLimitInSeconds < 0)
+
+
+            if (_mainWindowViewModel.Model != this)
+                return;
+
+                RemainingTime--;
+
+            if (RemainingTime <= 0)
             {
                 _timer.Stop();
+                NextQuestion();
+            }
+        }
+        
+
+        private int _remainingTime;
+        public int RemainingTime
+        {
+            get => _remainingTime;
+            set
+            {
+                _remainingTime = value;
+                RaisePropertyChanged();
             }
         }
 
@@ -230,7 +258,7 @@ namespace Labb3.ViewModels
 
             var newQuestion = new Question
             {
-                Query = "",
+                Query = "New Question (Please fill in)",
                 CorrectAnswer = "",
                 IncorrectAnswer1 = "",
                 IncorrectAnswer2 = "",
@@ -265,8 +293,10 @@ namespace Labb3.ViewModels
             ShuffleAnswers();
             RaisePropertyChanged(nameof(CurrentQuestion));
             RaisePropertyChanged(nameof(QuestionCounterText));
-
+            
             ResetButtonColors();
+
+            
         }
 
         private void EndGame(object? obj)
@@ -369,6 +399,9 @@ namespace Labb3.ViewModels
 
         public void StartGame()
         {
+            _playQuestions = ActivePack.Questions.ToList();  
+            Shuffle(_playQuestions);
+
             if (ActivePack == null || ActivePack.Questions.Count == 0)
                 return;
 
@@ -382,6 +415,12 @@ namespace Labb3.ViewModels
 
         private void LoadQuestion(Question q)
         {
+            RemainingTime = ActivePack.TimeLimitInSeconds;
+            RaisePropertyChanged(nameof(RemainingTime));
+
+            _timer.Start();
+
+
             var answers = new List<(string Text, bool IsCorrect)>
         {
             (q.CorrectAnswer, true),
@@ -389,7 +428,7 @@ namespace Labb3.ViewModels
             (q.IncorrectAnswer2, false),
             (q.IncorrectAnswer3, false)
         };
-
+               
             _shuffledAnswers = answers.OrderBy(a => Guid.NewGuid()).ToList();
 
             Answer1 = _shuffledAnswers[0].Text;
@@ -412,6 +451,8 @@ namespace Labb3.ViewModels
 
             int chosenIndex = int.Parse(chosenIndexObj.ToString());
             bool isCorrect = _shuffledAnswers[chosenIndex].IsCorrect;
+            if (isCorrect)
+                Score++;
 
             for (int i = 0; i < 4; i++)
             {
@@ -436,20 +477,40 @@ namespace Labb3.ViewModels
 
         private void NextQuestion()
         {
+            
             _currentQuestionIndex++;
             if (_currentQuestionIndex >= ActivePack.Questions.Count)
             {
+                _timer.Stop();
+                System.Windows.MessageBox.Show($"Du fick {Score} rätt av {ActivePack.Questions.Count}!", "Resultat");
+                Score = 0;
                 _mainWindowViewModel.Model = _mainWindowViewModel.ConfigurationViewModel;
                 return;
             }
 
-            var next = ActivePack.Questions[_currentQuestionIndex];
+            
+
+            var next = _playQuestions[_currentQuestionIndex];
             ActivePack.SelectedQuestion = next;
             LoadQuestion(next);
 
             RaisePropertyChanged(nameof(CurrentQuestion));
             RaisePropertyChanged(nameof(QuestionCounterText));
             RaisePropertyChanged(nameof(ActivePack));
+            _timer.Start();
+        }
+
+        private static void Shuffle<T>(IList<T> list)
+        {
+            Random rng = new Random();
+            int n = list.Count;
+
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                (list[n], list[k]) = (list[k], list[n]);
+            }
         }
 
         private void ShuffleAnswers()

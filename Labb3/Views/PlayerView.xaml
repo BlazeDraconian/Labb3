@@ -11,7 +11,7 @@
 
 >
     <Grid>
-        <TextBlock Text="{Binding ActivePack.TimeLimitInSeconds}"
+        <TextBlock Text="{Binding RemainingTime}"
                    FontWeight="Bold"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Top"
@@ -29,7 +29,7 @@
                        />
            
 
-            <TextBlock Text="{Binding ActivePack.SelectedQuestion.Query}" FontSize="20"/>
+            <TextBlock Text="{Binding ActivePack.SelectedQuestion.Query}" FontSize="20" Height="86"/>
 
         </StackPanel>
         <Button x:Name="Answer1"
